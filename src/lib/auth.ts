@@ -20,19 +20,26 @@ export const authOptions: NextAuthOptions = {
 	],
 	secret: process.env.SECRET,
 	callbacks: {
-		async redirect({ url, baseUrl }) {
-			return Promise.resolve("/list");
-		},
+		// async redirect({ url, baseUrl }) {
+		// 	return Promise.resolve("/");
+		// },
+
 		async jwt({ token, user, account, profile }) {
-			if (user) {
-				token.picture = "urrlimg";
+			if (profile) {
+				token.id = profile.id;
+				token.login = profile.login;
+				token.img = profile.image.link;
+				token.url = profile.url;
+				token.campus = profile.campus[0].name;
 			}
 			return token;
 		},
 		async session({ session, token, user }) {
-			if (user) {
-				session.user!.image = "dfdf";
-			}
+			session.user!.id = token.id as string;
+			session.user!.login = token.login as string;
+			session.user!.image = token.img as string;
+			session.user!.url = token.url as string;
+			session.user!.campus = token.campus as string;
 			return session;
 		},
 	},

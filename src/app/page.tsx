@@ -15,12 +15,7 @@ export default function Home() {
 				height: "70vh",
 			}}
 		>
-			<div>
-				<LoginButton />
-				<RegisterButton />
-				<LogoutButton />
-				<ProfileButton />
-			</div>
+			<h1>hello</h1>
 		</main>
 	);
 }
