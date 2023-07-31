@@ -15,7 +15,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 function UserNav() {
 	const { data: session } = useSession();
-	console.log(session);
 	return (
 		<div>
 			<DropdownMenu>

@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
-import { LoginButton } from "./buttons.component";
 import UserNav from "./usernav.comopnent";
 import { Button } from "./ui/button";
 
