@@ -76,3 +76,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+@keyframes ping {
+  75%, 90% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}

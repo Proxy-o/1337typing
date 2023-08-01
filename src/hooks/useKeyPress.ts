@@ -8,7 +8,12 @@ const useKeyPress = (callback: any) => {
 	useEffect(() => {
 		//4
 		const downHandler = ({ key }: { key: string }) => {
-			if (keyPressed !== key) {
+			// accept only one key and delete and backspace
+			if (
+				(keyPressed !== key && key.length === 1) ||
+				key === "Backspace" ||
+				key === "Delete"
+			) {
 				setKeyPressed(key);
 				callback && callback(key);
 			}
