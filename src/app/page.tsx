@@ -1,17 +1,21 @@
 "use client";
 
+import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import useKeyPress from "@/hooks/useKeyPress";
 import { useState, useEffect, useRef, use } from "react";
 
+const SECONDS = 10;
 export default function Home() {
-	const initialWords = "The quick brown fox jumps over the lazy dog";
+	const initialWords = "The quick";
 	const wordsArr = initialWords.split(" ");
 	const [word, setWord] = useState(wordsArr[0]);
 	const [currentLetter, setCurrentLetter] = useState(word[0]);
 	const [currentWordIndex, setCurrentWordIndex] = useState(0);
 	const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
 	const [spacePressed, setSpacePressed] = useState(false);
+	const [countDown, setCountDown] = useState(SECONDS);
+	const [time, setTime] = useState(0);
 
 	const wordsStyling = wordsArr.map((word, word_index) => {
 		return word.split("").map((letter, index) => {
@@ -24,9 +28,31 @@ export default function Home() {
 		});
 	});
 	const [words, setWords] = useState(wordsStyling);
-
+	console.log(time);
 	useKeyPress((key: any) => {
 		if (key === currentLetter) {
+			// handle count down
+			// start when first letter is pressed
+			if (currentWordIndex === 0 && currentLetterIndex === 0) {
+				let interval = setInterval(() => {
+					setCountDown((prevCountdown) => {
+						if (prevCountdown === 0) {
+							clearInterval(interval);
+							return SECONDS;
+						} else {
+							return prevCountdown - 1;
+						}
+					});
+				}, 1000);
+			}
+			// stop when last letter is pressed and save score
+			if (
+				currentWordIndex === wordsArr.length - 1 &&
+				currentLetterIndex === wordsArr[wordsArr.length - 1].length - 1
+			) {
+				setTime(SECONDS - countDown);
+				setCountDown(0);
+			}
 			setSpacePressed(false);
 			setCurrentLetter(word[currentLetterIndex + 1]);
 			setCurrentLetterIndex(currentLetterIndex + 1);
@@ -129,7 +155,9 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-green-300 flex  h-screen justify-center items-center">
+		<div className="bg-gray-800 flex  h-screen justify-center items-center  text-gray-300 flex-col">
+			<div className="flex flex-col  items-center w-full">{countDown}</div>
+			{time > 0 && <div className="flex">{time}</div>}
 			{wordsArr.map((word, word_index) => (
 				<div key={word_index} className=" mr-2">
 					{word.split("").map((letter, index) => (
@@ -138,17 +166,17 @@ export default function Home() {
 								key={index}
 								className={`${
 									words[word_index][index].style === "correct"
-										? "text-green-500"
+										? "text-gray-300"
 										: words[word_index][index].style === "incorrect"
 										? "text-red-500 "
-										: "text-black"
+										: "text-slate-500"
 								}`}
 							>
 								<span
 									className={`${
 										word_index === currentWordIndex &&
 										index === currentLetterIndex
-											? " text-base border-b-2 border-black"
+											? " text-base border-b-2 border-yellow-600  "
 											: ""
 									}`}
 								>

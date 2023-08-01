@@ -79,9 +79,3 @@
 
 
 
-@keyframes ping {
-  75%, 90% {
-    transform: scale(1);
-    opacity: 0;
-  }
-}
