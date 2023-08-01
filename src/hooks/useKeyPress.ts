@@ -8,7 +8,7 @@ const useKeyPress = (callback: any) => {
 	useEffect(() => {
 		//4
 		const downHandler = ({ key }: { key: string }) => {
-			if (keyPressed !== key && key.length === 1) {
+			if (keyPressed !== key) {
 				setKeyPressed(key);
 				callback && callback(key);
 			}
