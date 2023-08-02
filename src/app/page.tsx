@@ -1,13 +1,11 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import useKeyPress from "@/hooks/useKeyPress";
 import { useState, useEffect, useRef, use } from "react";
 
-const SECONDS = 2;
+const SECONDS = 30;
 export default function Home() {
-	const initialWords = "The quick one bro";
+	const initialWords = "The quick one but";
 	const wordsArr = initialWords.split(" ");
 	const [word, setWord] = useState(wordsArr[0]);
 	const [currentLetter, setCurrentLetter] = useState(word[0]);
@@ -15,10 +13,11 @@ export default function Home() {
 	const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
 	const [spacePressed, setSpacePressed] = useState(false);
 	const [countDown, setCountDown] = useState(SECONDS);
-	const [time, setTime] = useState(0);
 	const [wpm, setWpm] = useState(0);
-	const [wrongWords, setWrongWords] = useState(0);
 	const [accuracy, setAccuracy] = useState(0);
+	const isLastLetter =
+		currentWordIndex === wordsArr.length - 1 &&
+		currentLetterIndex === wordsArr[wordsArr.length - 1].length;
 
 	const wordsStyling = wordsArr.map((word, word_index) => {
 		return word.split("").map((letter, index) => {
@@ -31,50 +30,51 @@ export default function Home() {
 		});
 	});
 	const [words, setWords] = useState(wordsStyling);
+
+	useEffect(() => {
+		if (countDown === 0 || isLastLetter) {
+			console.log("countDown", countDown);
+			setCountDown(0);
+			setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
+			// cont the number of wrong words in words
+			let wrg = words.filter((word, word_index) => {
+				return (
+					word.filter((letter, index) => {
+						if (letter.style === "incorrect") {
+							return true;
+						}
+						return false;
+					}).length > 0
+				);
+			}).length;
+
+			setAccuracy(
+				Math.round(
+					((currentWordIndex + 1 - wrg) / (currentWordIndex + 1)) * 100 * 100
+				) / 100
+			);
+		}
+	}, [countDown, isLastLetter, currentWordIndex, currentLetterIndex, words]);
+
 	useKeyPress((key: any) => {
+		if (countDown === 0) {
+			return;
+		}
+		// the letter entered is correct
 		if (key === currentLetter) {
-			// handle count down
-			// start when first letter is pressed
 			if (currentWordIndex === 0 && currentLetterIndex === 0) {
 				let interval = setInterval(() => {
 					setCountDown((prevCountdown) => {
 						if (prevCountdown === 0) {
 							clearInterval(interval);
-							return SECONDS;
+							return 0;
 						} else {
 							return prevCountdown - 1;
 						}
 					});
 				}, 1000);
 			}
-			// stop when last letter is pressed and save score
-			if (
-				(currentWordIndex === wordsArr.length - 1 &&
-					currentLetterIndex === wordsArr[wordsArr.length - 1].length - 1) ||
-				countDown === 0
-			) {
-				setTime(SECONDS - countDown);
-				setCountDown(0);
-				setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
-				// cont the nomber of wrong words in words
-				// count only one letter by word
-				let wrg = words.filter((word, word_index) => {
-					return (
-						word.filter((letter, index) => {
-							if (letter.style === "incorrect") {
-								return true;
-							}
-							return false;
-						}).length > 0
-					);
-				}).length;
 
-				setAccuracy(
-					Math.round(
-						((currentWordIndex + 1 - wrg) / (currentWordIndex + 1)) * 100 * 100
-					) / 100
-				);
-			}
 			setSpacePressed(false);
 			setCurrentLetter(word[currentLetterIndex + 1]);
 			setCurrentLetterIndex(currentLetterIndex + 1);
@@ -178,12 +178,14 @@ export default function Home() {
 
 	return (
 		<div className="bg-gray-800 flex  h-screen justify-center items-center  text-gray-300 flex-col">
-			<div className="flex flex-col  items-center w-full">{countDown}</div>
-			{<div className="flex">{wpm} WPM</div>}
-			{<div className="flex">{accuracy}%</div>}
+			<div className="flex flex-col  items-center w-full">
+				{countDown > 0 && countDown}
+			</div>
+			{countDown === 0 && <div className="flex">{wpm} WPM</div>}
+			{countDown === 0 && <div className="flex">{accuracy}%</div>}
 			<div className=" flex">
 				{wordsArr.map((word, word_index) => (
-					<div key={word_index} className=" mr-2">
+					<div key={word_index} className=" mr-2 ">
 						{word.split("").map((letter, index) => (
 							<>
 								<span
