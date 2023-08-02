@@ -5,9 +5,9 @@ import { Separator } from "@/components/ui/separator";
 import useKeyPress from "@/hooks/useKeyPress";
 import { useState, useEffect, useRef, use } from "react";
 
-const SECONDS = 10;
+const SECONDS = 2;
 export default function Home() {
-	const initialWords = "The quick";
+	const initialWords = "The quick one bro";
 	const wordsArr = initialWords.split(" ");
 	const [word, setWord] = useState(wordsArr[0]);
 	const [currentLetter, setCurrentLetter] = useState(word[0]);
@@ -16,6 +16,9 @@ export default function Home() {
 	const [spacePressed, setSpacePressed] = useState(false);
 	const [countDown, setCountDown] = useState(SECONDS);
 	const [time, setTime] = useState(0);
+	const [wpm, setWpm] = useState(0);
+	const [wrongWords, setWrongWords] = useState(0);
+	const [accuracy, setAccuracy] = useState(0);
 
 	const wordsStyling = wordsArr.map((word, word_index) => {
 		return word.split("").map((letter, index) => {
@@ -28,7 +31,6 @@ export default function Home() {
 		});
 	});
 	const [words, setWords] = useState(wordsStyling);
-	console.log(time);
 	useKeyPress((key: any) => {
 		if (key === currentLetter) {
 			// handle count down
@@ -47,11 +49,31 @@ export default function Home() {
 			}
 			// stop when last letter is pressed and save score
 			if (
-				currentWordIndex === wordsArr.length - 1 &&
-				currentLetterIndex === wordsArr[wordsArr.length - 1].length - 1
+				(currentWordIndex === wordsArr.length - 1 &&
+					currentLetterIndex === wordsArr[wordsArr.length - 1].length - 1) ||
+				countDown === 0
 			) {
 				setTime(SECONDS - countDown);
 				setCountDown(0);
+				setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
+				// cont the nomber of wrong words in words
+				// count only one letter by word
+				let wrg = words.filter((word, word_index) => {
+					return (
+						word.filter((letter, index) => {
+							if (letter.style === "incorrect") {
+								return true;
+							}
+							return false;
+						}).length > 0
+					);
+				}).length;
+
+				setAccuracy(
+					Math.round(
+						((currentWordIndex + 1 - wrg) / (currentWordIndex + 1)) * 100 * 100
+					) / 100
+				);
 			}
 			setSpacePressed(false);
 			setCurrentLetter(word[currentLetterIndex + 1]);
@@ -157,36 +179,39 @@ export default function Home() {
 	return (
 		<div className="bg-gray-800 flex  h-screen justify-center items-center  text-gray-300 flex-col">
 			<div className="flex flex-col  items-center w-full">{countDown}</div>
-			{time > 0 && <div className="flex">{time}</div>}
-			{wordsArr.map((word, word_index) => (
-				<div key={word_index} className=" mr-2">
-					{word.split("").map((letter, index) => (
-						<>
-							<span
-								key={index}
-								className={`${
-									words[word_index][index].style === "correct"
-										? "text-gray-300"
-										: words[word_index][index].style === "incorrect"
-										? "text-red-500 "
-										: "text-slate-500"
-								}`}
-							>
+			{<div className="flex">{wpm} WPM</div>}
+			{<div className="flex">{accuracy}%</div>}
+			<div className=" flex">
+				{wordsArr.map((word, word_index) => (
+					<div key={word_index} className=" mr-2">
+						{word.split("").map((letter, index) => (
+							<>
 								<span
+									key={index}
 									className={`${
-										word_index === currentWordIndex &&
-										index === currentLetterIndex
-											? " text-base border-b-2 border-yellow-600  "
-											: ""
+										words[word_index][index].style === "correct"
+											? "text-gray-300"
+											: words[word_index][index].style === "incorrect"
+											? "text-red-500 "
+											: "text-slate-500"
 									}`}
 								>
-									{letter}
+									<span
+										className={`${
+											word_index === currentWordIndex &&
+											index === currentLetterIndex
+												? " text-base border-b-2 border-yellow-600  "
+												: ""
+										}`}
+									>
+										{letter}
+									</span>
 								</span>
-							</span>
-						</>
-					))}
-				</div>
-			))}
+							</>
+						))}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }
