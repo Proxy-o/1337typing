@@ -2,10 +2,22 @@
 
 import Text from "@/components/text.component";
 import useKeyPress from "@/hooks/useKeyPress";
+import { prisma } from "@/lib/prisma";
+import { User } from "@/lib/types";
+import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef, use } from "react";
 
 const SECONDS = 30;
+
+async function insertUser(user: User) {
+	prisma.repository.findFirst({
+		where: {
+			id: user.id,
+		},
+	});
+}
 export default function Home() {
+	/// the game vars starts here
 	const initialWords = "The quick one but";
 	const wordsArr = initialWords.split(" ");
 	const [word, setWord] = useState(wordsArr[0]);
@@ -31,10 +43,20 @@ export default function Home() {
 		});
 	});
 	const [words, setWords] = useState(wordsStyling);
+	// the game vars ends here
+
+	// user handling starts here
+	const { data, status } = useSession();
 
 	useEffect(() => {
 		if (countDown === 0 || isLastLetter) {
-			console.log("countDown", countDown);
+			insertUser({
+				id: 1,
+				login: "test",
+				score: 0,
+				avatar_url: "test",
+				profile_url: "test",
+			});
 			setCountDown(0);
 			setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
 			// cont the number of wrong words in words
