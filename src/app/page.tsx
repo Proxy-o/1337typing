@@ -2,10 +2,10 @@
 
 import Text from "@/components/text.component";
 import useKeyPress from "@/hooks/useKeyPress";
-import { prisma } from "@/lib/prisma";
-import { User } from "@/lib/types";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef, use } from "react";
+import axios from "axios";
+import { User } from "@/lib/types";
 
 const SECONDS = 30;
 
@@ -24,6 +24,7 @@ export default function Home() {
 	const isLastLetter =
 		currentWordIndex === wordsArr.length - 1 &&
 		currentLetterIndex === wordsArr[wordsArr.length - 1].length;
+	const [updateScore, setUpdateScore] = useState(true);
 
 	const wordsStyling = wordsArr.map((word, word_index) => {
 		return word.split("").map((letter, index) => {
@@ -39,10 +40,16 @@ export default function Home() {
 	// the game vars ends here
 
 	// user handling starts here
-	const { data, status } = useSession();
+	const { data: session } = useSession();
 
+	async function updatePWD(userData: User) {
+		await axios.post("/api/users", {
+			...userData,
+		});
+	}
 	useEffect(() => {
-		if (countDown === 0 || isLastLetter) {
+		if ((countDown === 0 || isLastLetter) && updateScore) {
+			setUpdateScore(false);
 			setCountDown(0);
 			setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
 			// cont the number of wrong words in words
@@ -62,8 +69,26 @@ export default function Home() {
 					((currentWordIndex + 1 - wrg) / (currentWordIndex + 1)) * 100 * 100
 				) / 100
 			);
+			if (session && session.user) {
+				updatePWD({
+					id: session.user.id,
+					login: session.user.login,
+					score: Math.round((currentWordIndex / (SECONDS - countDown)) * 60),
+					avatarUrl: session.user.image!,
+					profileUrl: session.user.url,
+				});
+			}
 		}
-	}, [countDown, isLastLetter, currentWordIndex, currentLetterIndex, words]);
+	}, [
+		countDown,
+		currentWordIndex,
+		currentLetterIndex,
+		isLastLetter,
+		session,
+		words,
+		updateScore,
+		wpm,
+	]);
 
 	useKeyPress((key: any) => {
 		if (countDown === 0) {

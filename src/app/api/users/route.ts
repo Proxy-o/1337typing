@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 			id: true,
 			login: true,
 			profileUrl: true,
-			avatar_url: true,
+			avatarUrl: true,
 			score: true,
 		},
 	});
@@ -18,7 +18,6 @@ export async function GET(request: NextRequest) {
 
 // POST /api/users to create a new user
 export async function POST(request: NextRequest) {
-	console.log("POST /api/users");
 	let user;
 	try {
 		const requestBody = await request.json();
@@ -26,27 +25,32 @@ export async function POST(request: NextRequest) {
 		if (!requestBody) {
 			throw new Error("Request body is missing.");
 		}
-
 		// Input validation - check for required fields
 		if (
 			!requestBody.login ||
 			!requestBody.profileUrl ||
-			!requestBody.avatar_url ||
+			!requestBody.avatarUrl ||
 			!requestBody.score
 		) {
 			throw new Error(
 				"All fields (login, profileUrl, avatar_url, score) are required."
 			);
 		}
-
 		// Data sanitization (optional) - sanitize the input data if needed
 
-		user = await prisma.user.create({
-			data: {
+		user = await prisma.user.upsert({
+			where: {
+				login: requestBody.login,
+			},
+			update: {
+				score: requestBody.score,
+			},
+			create: {
+				id: requestBody.id,
 				login: requestBody.login,
 				profileUrl: requestBody.profileUrl,
-				avatar_url: requestBody.avatar_url,
-				score: requestBody.score,
+				avatarUrl: requestBody.avatarUrl,
+				score: parseInt(requestBody.score),
 			},
 		});
 	} catch (error) {

@@ -15,5 +15,5 @@ model User {
   login      String  @unique
   score      Int?
   profileUrl String?
-  avatar_url String?
+  avatarUrl  String?
 }
