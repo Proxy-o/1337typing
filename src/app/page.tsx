@@ -9,13 +9,6 @@ import { useState, useEffect, useRef, use } from "react";
 
 const SECONDS = 30;
 
-async function insertUser(user: User) {
-	prisma.repository.findFirst({
-		where: {
-			id: user.id,
-		},
-	});
-}
 export default function Home() {
 	/// the game vars starts here
 	const initialWords = "The quick one but";
@@ -50,13 +43,6 @@ export default function Home() {
 
 	useEffect(() => {
 		if (countDown === 0 || isLastLetter) {
-			insertUser({
-				id: 1,
-				login: "test",
-				score: 0,
-				avatar_url: "test",
-				profile_url: "test",
-			});
 			setCountDown(0);
 			setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
 			// cont the number of wrong words in words
