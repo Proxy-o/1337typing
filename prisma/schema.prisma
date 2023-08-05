@@ -13,7 +13,8 @@ datasource db {
 model User {
   id         Int     @id @default(autoincrement())
   login      String  @unique
-  score      Int?
+  wpm        Int?
+  accuracy   Int?
   profileUrl String?
   avatarUrl  String?
 }

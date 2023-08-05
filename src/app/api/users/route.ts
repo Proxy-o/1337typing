@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
 			login: true,
 			profileUrl: true,
 			avatarUrl: true,
-			score: true,
+			wpm: true,
+			accuracy: true,
 		},
 	});
 	return NextResponse.json(users);
@@ -30,29 +31,52 @@ export async function POST(request: NextRequest) {
 			!requestBody.login ||
 			!requestBody.profileUrl ||
 			!requestBody.avatarUrl ||
-			!requestBody.score
+			!requestBody.wpm ||
+			!requestBody.accuracy
 		) {
 			throw new Error(
-				"All fields (login, profileUrl, avatar_url, score) are required."
+				"A required field is missing. Required fields: login, profileUrl, avatarUrl, wpm, accuracy"
 			);
 		}
 		// Data sanitization (optional) - sanitize the input data if needed
 
-		user = await prisma.user.upsert({
+		const existingUser = await prisma.user.findUnique({
 			where: {
 				login: requestBody.login,
 			},
-			update: {
-				score: requestBody.score,
-			},
-			create: {
-				id: requestBody.id,
-				login: requestBody.login,
-				profileUrl: requestBody.profileUrl,
-				avatarUrl: requestBody.avatarUrl,
-				score: parseInt(requestBody.score),
-			},
 		});
+		const shouldUpdateUser =
+			existingUser &&
+			((existingUser.wpm && existingUser.wpm <= parseInt(requestBody.wpm)) ||
+				(existingUser.accuracy &&
+					existingUser.accuracy <= parseInt(requestBody.accuracy)));
+
+		if (shouldUpdateUser) {
+			// Update the existing user with the new wpm and accuracy
+			user = await prisma.user.update({
+				where: {
+					login: requestBody.login,
+				},
+				data: {
+					wpm: parseInt(requestBody.wpm),
+					accuracy: parseInt(requestBody.accuracy),
+					// other fields you may want to update
+				},
+			});
+		} else if (!existingUser) {
+			// Create a new user since the user does not exist
+			user = await prisma.user.create({
+				data: {
+					id: requestBody.id,
+					login: requestBody.login,
+					profileUrl: requestBody.profileUrl,
+					avatarUrl: requestBody.avatarUrl,
+					wpm: parseInt(requestBody.wpm),
+					accuracy: parseInt(requestBody.accuracy),
+					// other fields you may want to create the user with
+				},
+			});
+		}
 	} catch (error) {
 		console.log(error);
 		return NextResponse.error();

@@ -1,7 +1,8 @@
 export type User = {
 	id: number;
 	login: string;
-	score: number?;
+	wpm: number?;
+	accuracy: number?;
 	avatarUrl: string?;
 	profileUrl: string?;
 };

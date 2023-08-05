@@ -51,7 +51,6 @@ export default function Home() {
 		if ((countDown === 0 || isLastLetter) && updateScore) {
 			setUpdateScore(false);
 			setCountDown(0);
-			setWpm(Math.round((currentWordIndex / (SECONDS - countDown)) * 60));
 			// cont the number of wrong words in words
 			let wrg = words.filter((word, word_index) => {
 				return (
@@ -64,16 +63,23 @@ export default function Home() {
 				);
 			}).length;
 
-			setAccuracy(
-				Math.round(
-					((currentWordIndex + 1 - wrg) / (currentWordIndex + 1)) * 100 * 100
-				) / 100
+			const newWpm = Math.round(
+				(currentWordIndex / (SECONDS - countDown)) * 60
 			);
+			setWpm(newWpm);
+			let newAccuracy = Math.round(
+				(((currentWordIndex + 1 - wrg) / (currentWordIndex + 1)) * 100 * 100) /
+					100
+			);
+
+			setAccuracy(newAccuracy);
+			console.log(session);
 			if (session && session.user) {
 				updatePWD({
 					id: session.user.id,
 					login: session.user.login,
-					score: Math.round((currentWordIndex / (SECONDS - countDown)) * 60),
+					wpm: newWpm,
+					accuracy: newAccuracy,
 					avatarUrl: session.user.image!,
 					profileUrl: session.user.url,
 				});
@@ -88,6 +94,7 @@ export default function Home() {
 		words,
 		updateScore,
 		wpm,
+		accuracy,
 	]);
 
 	useKeyPress((key: any) => {
