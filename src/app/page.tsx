@@ -6,13 +6,18 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef, use } from "react";
 import axios from "axios";
 import { User } from "@/lib/types";
+import { texts } from "@/lib/texts";
 
 const SECONDS = 3;
 
 export default function Home() {
 	/// the game vars starts here
-	const initialWords = "The quick one but";
+	const nbr = Math.floor(Math.random() * texts.length);
+
+	let initialWords = texts[nbr].trim();
 	const wordsArr = initialWords.split(" ");
+	console.log(wordsArr);
+
 	const [word, setWord] = useState(wordsArr[0]);
 	const [currentLetter, setCurrentLetter] = useState(word[0]);
 	const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -36,6 +41,8 @@ export default function Home() {
 			};
 		});
 	});
+	console.log(wordsStyling);
+
 	const [words, setWords] = useState(wordsStyling);
 	// the game vars ends here
 
