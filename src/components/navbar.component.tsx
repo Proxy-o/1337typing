@@ -2,12 +2,20 @@
 import { cn } from "@/lib/utils";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import UserNav from "./usernav.comopnent";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 function NavBar() {
+	const router = useRouter();
 	const { data } = useSession();
+	const [activeLink, setActiveLink] = useState("");
+
+	// Function to set the active link based on the current route
+	const handleSetActiveLink = (href: string) => {
+		setActiveLink(href);
+	};
 
 	return (
 		<div className="flex p-2 max-w-7xl mx-auto">
@@ -15,29 +23,31 @@ function NavBar() {
 				<>
 					<nav className="flex items-center space-x-4 lg:space-x-6 w-full">
 						<Link
-							href="/examples/dashboard"
-							className="text-sm font-medium transition-colors hover:text-primary"
+							href="/"
+							className={`text-sm font-medium transition-colors ${
+								activeLink === "/" ? "text-primary" : "text-muted-foreground"
+							} hover:text-primary`}
+							onClick={() => handleSetActiveLink("/")}
 						>
 							Home
 						</Link>
 						<Link
-							href="/examples/dashboard"
-							className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+							href="/leaderboard"
+							className={`text-sm font-medium transition-colors ${
+								activeLink === "/leaderboard"
+									? "text-primary"
+									: "text-muted-foreground"
+							} hover:text-primary`}
+							onClick={() => handleSetActiveLink("/leaderboard")}
 						>
 							Leaderboard
-						</Link>
-						<Link
-							href="/examples/dashboard"
-							className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-						>
-							Settings
 						</Link>
 					</nav>
 					<UserNav />
 				</>
 			) : (
 				<div className="w-full flex justify-end">
-					<Button onClick={() => signIn()}> Login </Button>
+					<Button onClick={() => signIn()}>Login</Button>
 				</div>
 			)}
 		</div>

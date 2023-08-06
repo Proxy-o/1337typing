@@ -6,10 +6,8 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import UserCard from "@/components/userCard.compnent";
-import { authOptions } from "@/lib/auth";
 import { User } from "@/lib/types";
 import axios from "axios";
-import { getServerSession } from "next-auth";
 
 export default async function List() {
 	// fetch users with fetch method
@@ -30,15 +28,14 @@ export default async function List() {
 	}
 
 	return (
-		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-			<Card className="col-span-3">
-				<CardHeader>
-					<CardTitle>Recent Sales</CardTitle>
-					<CardDescription>You made 265 sales this month.</CardDescription>
+		<div className=" flex p-2 max-w-7xl mx-auto">
+			<Card className="w-full">
+				<CardHeader className="text-center">
+					<CardTitle>Speedy Typers Leaderboard</CardTitle>
 				</CardHeader>
 				<CardContent>
 					{users.map((user: User, index: number) => {
-						return <UserCard user={user} key={index} />;
+						return <UserCard user={user} rank={index} key={index} />;
 					})}
 				</CardContent>
 			</Card>

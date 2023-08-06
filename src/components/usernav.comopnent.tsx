@@ -13,6 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 function UserNav() {
 	const { data: session } = useSession();
 	return (
@@ -39,8 +40,13 @@ function UserNav() {
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
-						<DropdownMenuItem>Profile</DropdownMenuItem>
-						<DropdownMenuItem>Settings</DropdownMenuItem>
+						<DropdownMenuItem>
+							<Link
+								href={`https://profile.intra.42.fr/users/${session?.user?.login}`}
+							>
+								Profile
+							</Link>
+						</DropdownMenuItem>
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>

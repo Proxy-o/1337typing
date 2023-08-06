@@ -63,7 +63,6 @@ export async function POST(request: NextRequest) {
 			data: {
 				wpm: parseInt(requestBody.wpm),
 				accuracy: parseInt(requestBody.accuracy),
-				// other fields you may want to update
 			},
 		});
 	} else if (!existingUser) {
@@ -76,7 +75,6 @@ export async function POST(request: NextRequest) {
 				avatarUrl: requestBody.avatarUrl,
 				wpm: parseInt(requestBody.wpm),
 				accuracy: parseInt(requestBody.accuracy),
-				// other fields you may want to create the user with
 			},
 		});
 	}
