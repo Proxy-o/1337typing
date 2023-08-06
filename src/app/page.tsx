@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, use } from "react";
 import axios from "axios";
 import { User } from "@/lib/types";
 
-const SECONDS = 30;
+const SECONDS = 3;
 
 export default function Home() {
 	/// the game vars starts here
@@ -74,7 +74,7 @@ export default function Home() {
 
 			setAccuracy(newAccuracy);
 			console.log(session);
-			if (session && session.user) {
+			if (session && session.user && newWpm > 0 && newAccuracy > 0) {
 				updatePWD({
 					id: session.user.id,
 					login: session.user.login,
