@@ -197,23 +197,25 @@ export default function Home() {
 			setCurrentLetterIndex(0);
 			setCurrentLetter(wordsArr[currentWordIndex + 1][0]);
 		} else if (key !== currentLetter && key !== "Backspace" && key !== " ") {
-			setWords(
-				words.map((word, word_index) => {
-					return word.map((letter, index) => {
-						if (word_index === currentWordIndex) {
-							if (index === currentLetterIndex) {
-								return {
-									...letter,
-									style: "incorrect",
-								};
+			if (currentLetterIndex < word.length - 1) {
+				setWords(
+					words.map((word, word_index) => {
+						return word.map((letter, index) => {
+							if (word_index === currentWordIndex) {
+								if (index === currentLetterIndex) {
+									return {
+										...letter,
+										style: "incorrect",
+									};
+								}
 							}
-						}
-						return letter;
-					});
-				})
-			);
-			setCurrentLetterIndex(currentLetterIndex + 1);
-			setCurrentLetter(word[currentLetterIndex + 1]);
+							return letter;
+						});
+					})
+				);
+				setCurrentLetterIndex(currentLetterIndex + 1);
+				setCurrentLetter(word[currentLetterIndex + 1]);
+			}
 		}
 	});
 
