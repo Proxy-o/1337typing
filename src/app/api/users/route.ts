@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 			accuracy: true,
 		},
 		orderBy: {
-			wpm: "asc",
+			wpm: "desc",
 		},
 	});
 	return NextResponse.json(users);

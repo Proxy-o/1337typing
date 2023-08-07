@@ -42,9 +42,16 @@ export default async function List() {
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{users.map((user: User, index: number) => {
-						return <UserCard user={user} rank={index} key={index} />;
-					})}
+					{/* sort the cards with wpm + acc / 2 */}
+					{users
+						.sort((a, b) => {
+							const aScore = ((a.wpm || 1) + (a.accuracy || 1)) / 2;
+							const bScore = ((b.wpm || 1) + (b.accuracy || 1)) / 2;
+							return bScore - aScore;
+						})
+						.map((user, index) => (
+							<UserCard key={user.id} user={user} rank={index} />
+						))}
 				</CardContent>
 			</Card>
 		</div>

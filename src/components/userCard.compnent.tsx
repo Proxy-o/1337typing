@@ -17,8 +17,8 @@ function UserCard({ user, rank }: { user: User; rank: number }) {
 			<div className="ml-4 space-y-1">
 				<p className="text-sm font-medium leading-none">{user.login}</p>
 			</div>
-			<div className="ml-auto font-medium">{user.accuracy} % Accuracy </div>
 			<div className="ml-auto font-medium">{user.wpm} WPM </div>
+			<div className="ml-auto font-medium">{user.accuracy} % Accuracy </div>
 		</Link>
 	);
 }
