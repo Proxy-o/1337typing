@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { NextAuthOptions } from "next-auth";
 import FortyTwoProvider from "next-auth/providers/42-school";
 
