@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/users to retrieve all users
 export async function GET(request: NextRequest) {
+	const path = request.nextUrl.searchParams.get("path");
+	revalidatePath(path!);
 	const users = await prisma.user.findMany({
 		select: {
 			id: true,
@@ -16,7 +19,7 @@ export async function GET(request: NextRequest) {
 			wpm: "asc",
 		},
 	});
-	return NextResponse.json(users);
+	return NextResponse.json({ users, revalidated: true, now: Date.now() });
 }
 
 // POST /api/users to create a new user
