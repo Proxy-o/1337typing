@@ -1,10 +1,4 @@
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import UserCard from "@/components/userCard.compnent";
 import { User } from "@/lib/types";
 import axios from "axios";

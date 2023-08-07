@@ -4,9 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/users to retrieve all users
 export async function GET(request: NextRequest) {
-	const path = request.nextUrl.pathname;
-	console.log(path);
-	revalidatePath(path!);
 	const users = await prisma.user.findMany({
 		select: {
 			id: true,
