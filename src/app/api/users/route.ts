@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/users to retrieve all users

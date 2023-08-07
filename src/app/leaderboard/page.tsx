@@ -9,13 +9,23 @@ export default async function List() {
 	try {
 		const baseURL = process.env.BASE_URL;
 
-		// Create an Axios instance with the base URL
-		const api = axios.create({
-			baseURL: baseURL,
-		});
+		// Create a new `fetch` request
+		const request = new Request(`${baseURL}/api/users`);
 
-		const response = await api.get("/api/users");
-		users = response.data;
+		// Make the request
+		const response = await fetch(request);
+
+		// Check if the request was successful
+		if (response.status === 200) {
+			// Parse the response body as JSON
+			const data = await response.json();
+
+			// Set the users variable to the data
+			users = data;
+		} else {
+			// Handle the error
+			throw new Error(`Request failed with status code ${response.status}`);
+		}
 	} catch (error) {
 		// Handle any errors that occurred during the request
 	}
