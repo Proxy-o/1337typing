@@ -27,10 +27,12 @@ export default async function List() {
 	}
 
 	return (
-		<div className=" flex p-2 max-w-7xl mx-auto">
-			<Card className="w-full">
+		<div className=" flex p-2 max-w-7xl mx-auto  ">
+			<Card className="w-full bg-secondary">
 				<CardHeader className="text-center">
-					<CardTitle>Speedy Typers Leaderboard</CardTitle>
+					<CardTitle className="text-primary">
+						Speedy Typers Leaderboard
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					{users.map((user: User, index: number) => {

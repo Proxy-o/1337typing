@@ -18,38 +18,42 @@ function NavBar() {
 	};
 
 	return (
-		<div className="flex p-2 max-w-7xl mx-auto">
-			{data ? (
-				<>
-					<nav className="flex items-center space-x-4 lg:space-x-6 w-full">
-						<Link
-							href="/"
-							className={`text-sm font-medium transition-colors ${
-								activeLink === "/" ? "text-primary" : "text-muted-foreground"
-							} hover:text-primary`}
-							onClick={() => handleSetActiveLink("/")}
-						>
-							Home
-						</Link>
-						<Link
-							href="/leaderboard"
-							className={`text-sm font-medium transition-colors ${
-								activeLink === "/leaderboard"
-									? "text-primary"
-									: "text-muted-foreground"
-							} hover:text-primary`}
-							onClick={() => handleSetActiveLink("/leaderboard")}
-						>
-							Leaderboard
-						</Link>
-					</nav>
-					<UserNav />
-				</>
-			) : (
-				<div className="w-full flex justify-end">
-					<Button onClick={() => signIn()}>Login</Button>
-				</div>
-			)}
+		<div className="bg-primary">
+			<div className="flex p-2 max-w-7xl mx-auto">
+				{data ? (
+					<>
+						<nav className="flex items-center space-x-4 lg:space-x-6 w-full">
+							<Link
+								href="/"
+								className={`text-sm font-medium transition-colors ${
+									activeLink === "/"
+										? "text-secondary"
+										: "text-muted-foreground"
+								} hover:text-secondary`}
+								onClick={() => handleSetActiveLink("/")}
+							>
+								Home
+							</Link>
+							<Link
+								href="/leaderboard"
+								className={`text-sm font-medium transition-colors ${
+									activeLink === "/leaderboard"
+										? "text-secondary"
+										: "text-muted-foreground"
+								} hover:text-secondary`}
+								onClick={() => handleSetActiveLink("/leaderboard")}
+							>
+								Leaderboard
+							</Link>
+						</nav>
+						<UserNav />
+					</>
+				) : (
+					<div className="w-full flex justify-end">
+						<Button onClick={() => signIn()}>Login</Button>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }
