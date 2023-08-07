@@ -65,7 +65,11 @@ export default function Home() {
 			let wrg = words.filter((word, word_index) => {
 				return (
 					word.filter((letter, index) => {
-						if (letter.style === "incorrect") {
+						if (
+							word_index <= currentWordIndex &&
+							currentLetterIndex !== 0 &&
+							(letter.style === "incorrect" || letter.style === "normal")
+						) {
 							return true;
 						}
 						return false;
@@ -128,6 +132,8 @@ export default function Home() {
 			setSpacePressed(false);
 			setCurrentLetter(word[currentLetterIndex + 1]);
 			setCurrentLetterIndex(currentLetterIndex + 1);
+			// set the word correct only of all word is completed
+
 			setWords(
 				words.map((word, word_index) => {
 					return word.map((letter, index) => {
@@ -144,6 +150,8 @@ export default function Home() {
 				})
 			);
 		}
+
+		// restart the game
 
 		if (key === "Backspace" && currentLetterIndex > 0) {
 			setSpacePressed(false);
