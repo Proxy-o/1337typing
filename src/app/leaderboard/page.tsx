@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import UserCard from "@/components/userCard.compnent";
 import { User } from "@/lib/types";
-import axios from "axios";
 
 export default async function List() {
 	// fetch users with fetch method
@@ -13,7 +12,11 @@ export default async function List() {
 		const request = new Request(`${baseURL}/api/users`);
 
 		// Make the request
-		const response = await fetch(request, { cache: "no-cache" });
+		const response = await fetch(request, {
+			next: {
+				revalidate: 0,
+			},
+		});
 
 		// Check if the request was successful
 		if (response.status === 200) {
@@ -28,8 +31,8 @@ export default async function List() {
 		}
 	} catch (error) {
 		// Handle any errors that occurred during the request
+		console.error(error);
 	}
-	console.log(users);
 	return (
 		<div className=" flex p-2 max-w-7xl mx-auto  ">
 			<Card className="w-full bg-secondary">
