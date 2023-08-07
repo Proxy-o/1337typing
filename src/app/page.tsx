@@ -8,6 +8,7 @@ import { User } from "@/lib/types";
 import { texts } from "@/lib/texts";
 import dynamic from "next/dynamic";
 
+// to fix the error: client render does not m
 const NoSSR = dynamic(() => import("@/components/text.component"), {
 	ssr: false,
 });
