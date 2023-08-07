@@ -17,7 +17,6 @@ function Text({
 	currentLetterIndex: number;
 	words: any;
 }) {
-	console.log(words);
 	return (
 		<div className="bg-gray-800 flex  h-screen justify-center items-center  text-gray-300 flex-col">
 			<div className="flex flex-col  items-center w-full">

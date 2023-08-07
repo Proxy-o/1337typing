@@ -24,7 +24,6 @@ export default async function List() {
 		users = response.data;
 	} catch (error) {
 		// Handle any errors that occurred during the request
-		console.error("Error fetching users:", error);
 	}
 
 	return (

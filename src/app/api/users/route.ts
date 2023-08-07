@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/users to retrieve all users
 export async function GET(request: NextRequest) {
-	console.log("GET /api/users");
 	const users = await prisma.user.findMany({
 		select: {
 			id: true,
