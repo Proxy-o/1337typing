@@ -2,7 +2,7 @@
 
 import useKeyPress from "@/hooks/useKeyPress";
 import { useSession } from "next-auth/react";
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { User } from "@/lib/types";
 import { texts } from "@/lib/texts";
@@ -12,7 +12,7 @@ import dynamic from "next/dynamic";
 const NoSSR = dynamic(() => import("@/components/text.component"), {
 	ssr: false,
 });
-const SECONDS = 3;
+const SECONDS = 30;
 
 export default function Home() {
 	/// the game vars starts here
@@ -50,7 +50,7 @@ export default function Home() {
 	// the game vars ends here
 
 	// user handling starts here
-	const { data: session } = useSession();
+	const { data: session }: { data: any } = useSession();
 
 	async function updatePWD(userData: User) {
 		await axios.post("/api/users", {
@@ -67,7 +67,6 @@ export default function Home() {
 					word.filter((letter, index) => {
 						if (
 							word_index <= currentWordIndex &&
-							currentLetterIndex !== 0 &&
 							(letter.style === "incorrect" || letter.style === "normal")
 						) {
 							return true;

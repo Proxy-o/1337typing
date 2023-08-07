@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 function UserNav() {
-	const { data: session } = useSession();
+	const { data: session }: { data: any } = useSession();
 	return (
 		<div>
 			<DropdownMenu>
@@ -43,13 +43,19 @@ function UserNav() {
 						<DropdownMenuItem>
 							<Link
 								href={`https://profile.intra.42.fr/users/${session?.user?.login}`}
+								className="w-full"
 							>
 								Profile
 							</Link>
 						</DropdownMenuItem>
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => signOut()}
+						className="hover:cursor-pointer"
+					>
+						Log out
+					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>
