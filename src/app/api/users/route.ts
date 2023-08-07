@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/users to retrieve all users
 export async function GET(request: NextRequest) {
-	const path = request.nextUrl.searchParams.get("path");
+	const path = request.nextUrl.pathname;
+	console.log(path);
 	revalidatePath(path!);
 	const users = await prisma.user.findMany({
 		select: {
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
 			wpm: "asc",
 		},
 	});
-	return NextResponse.json({ users, revalidated: true, now: Date.now() });
+	return NextResponse.json(users);
 }
 
 // POST /api/users to create a new user
