@@ -13,7 +13,7 @@ export default async function List() {
 		const request = new Request(`${baseURL}/api/users`);
 
 		// Make the request
-		const response = await fetch(request);
+		const response = await fetch(request, { cache: "no-cache" });
 
 		// Check if the request was successful
 		if (response.status === 200) {
@@ -29,7 +29,7 @@ export default async function List() {
 	} catch (error) {
 		// Handle any errors that occurred during the request
 	}
-
+	console.log(users);
 	return (
 		<div className=" flex p-2 max-w-7xl mx-auto  ">
 			<Card className="w-full bg-secondary">
