@@ -29,7 +29,6 @@ Tailwind: A CSS framework that makes it easy to style your websites
 Contributing
 Contributions are welcome! If you find any bugs or have any suggestions, please feel free to open an issue on GitHub.
 
-License
-The typing game is licensed under the MIT License.
+
 
 I hope you enjoy playing the typing game!
