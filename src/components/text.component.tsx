@@ -1,6 +1,10 @@
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import React from "react";
+import { Button } from "./ui/button";
+import { signIn } from "next-auth/react";
 
-function Text({
+async function Text({
 	countDown,
 	wpm,
 	accuracy,
@@ -17,8 +21,20 @@ function Text({
 	currentLetterIndex: number;
 	words: any;
 }) {
+	const session = await getServerSession(authOptions);
+
 	return (
 		<div className="bg-gray-800 flex  h-screen justify-center items-center  text-gray-300 flex-col text-4xl ">
+			{!session && (
+				<Button
+					onClick={() => {
+						signIn();
+					}}
+				>
+					Sign In
+				</Button>
+			)}
+
 			<div className="flex flex-col  items-center w-full">
 				{countDown > 0 && countDown}
 			</div>
