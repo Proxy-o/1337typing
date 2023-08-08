@@ -1,4 +1,6 @@
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -48,6 +50,7 @@ export async function POST(request: NextRequest) {
 	}
 	// Data sanitization (optional) - sanitize the input data if needed
 
+	const session = await getServerSession(authOptions);
 	const existingUser = await prisma.user.findUnique({
 		where: {
 			login: requestBody.login,
@@ -59,7 +62,11 @@ export async function POST(request: NextRequest) {
 			(existingUser.accuracy &&
 				existingUser.accuracy <= parseInt(requestBody.accuracy)));
 
-	if (shouldUpdateUser === true) {
+	if (
+		shouldUpdateUser === true &&
+		session &&
+		requestBody.login === session.user!.name
+	) {
 		// Update the existing user with the new wpm and accuracy
 		user = await prisma.user.update({
 			where: {
@@ -70,7 +77,11 @@ export async function POST(request: NextRequest) {
 				accuracy: parseInt(requestBody.accuracy),
 			},
 		});
-	} else if (!existingUser) {
+	} else if (
+		!existingUser &&
+		session &&
+		requestBody.login === session.user!.name
+	) {
 		// Create a new user since the user does not exist
 		user = await prisma.user.create({
 			data: {
