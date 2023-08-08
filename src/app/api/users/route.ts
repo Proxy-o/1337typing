@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
 		// Create a new user since the user does not exist
 		user = await prisma.user.create({
 			data: {
-				id: requestBody.id,
+				// id: requestBody.id,
 				login: requestBody.login,
 				profileUrl: requestBody.profileUrl,
 				avatarUrl: requestBody.avatarUrl,
