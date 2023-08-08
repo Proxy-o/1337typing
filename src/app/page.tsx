@@ -1,12 +1,15 @@
 "use client";
 
 import useKeyPress from "@/hooks/useKeyPress";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { User } from "@/lib/types";
 import { texts } from "@/lib/texts";
 import dynamic from "next/dynamic";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import Skeleton from "@/components/skeleton.component";
 
 // to fix the error: client render does not m
 const NoSSR = dynamic(() => import("@/components/text.component"), {
@@ -50,12 +53,17 @@ export default function Home() {
 	// the game vars ends here
 
 	// user handling starts here
-	const { data: session }: { data: any } = useSession();
+	const { data: session, status }: { data: any; status: any } = useSession();
 
 	async function updatePWD(userData: User) {
 		await axios.post("/api/users", {
 			...userData,
 		});
+	}
+	// redirect to login page if user is not logged in
+	const router = useRouter();
+	if (!session) {
+		signIn();
 	}
 	useEffect(() => {
 		if ((countDown === 0 || isLastLetter) && updateScore) {
@@ -234,16 +242,22 @@ export default function Home() {
 			}
 		}
 	});
-
+	if (status !== "loading") {
+		return (
+			<NoSSR
+				countDown={countDown}
+				wpm={wpm}
+				accuracy={accuracy}
+				wordsArr={wordsArr}
+				currentWordIndex={currentWordIndex}
+				currentLetterIndex={currentLetterIndex}
+				words={words}
+			/>
+		);
+	}
 	return (
-		<NoSSR
-			countDown={countDown}
-			wpm={wpm}
-			accuracy={accuracy}
-			wordsArr={wordsArr}
-			currentWordIndex={currentWordIndex}
-			currentLetterIndex={currentLetterIndex}
-			words={words}
-		/>
+		<div className="w-full h-screen flex justify-center items-center 0">
+			<Skeleton className="h-2/3 w-full text-red-400 mt-16" />
+		</div>
 	);
 }

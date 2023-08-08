@@ -6,10 +6,10 @@ import React, { useState } from "react";
 import UserNav from "./usernav.comopnent";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import Skeleton from "./skeleton.component";
 
 function NavBar() {
-	const router = useRouter();
-	const { data } = useSession();
+	const { data, status } = useSession();
 	const [activeLink, setActiveLink] = useState("");
 
 	// Function to set the active link based on the current route
@@ -50,7 +50,14 @@ function NavBar() {
 					</>
 				) : (
 					<div className="w-full flex justify-end">
-						<Button onClick={() => signIn()}>Login</Button>
+						{status === "loading" ? (
+							<>
+								<Skeleton />
+								<Skeleton className="rounded-full w-8" />
+							</>
+						) : (
+							<Button onClick={() => signIn()}>Login</Button>
+						)}
 					</div>
 				)}
 			</div>
