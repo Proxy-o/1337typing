@@ -1,6 +1,6 @@
 import React from "react";
 
-async function Text({
+function Text({
 	countDown,
 	wpm,
 	accuracy,
