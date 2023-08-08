@@ -62,9 +62,7 @@ export default function Home() {
 	}
 	// redirect to login page if user is not logged in
 	const router = useRouter();
-	if (!session) {
-		signIn();
-	}
+
 	useEffect(() => {
 		if ((countDown === 0 || isLastLetter) && updateScore) {
 			setUpdateScore(false);
@@ -242,7 +240,32 @@ export default function Home() {
 			}
 		}
 	});
-	if (status !== "loading") {
+	if (status === "loading") {
+		return (
+			<div className="w-full h-screen items-center flex justify-center  flex-col">
+				<Skeleton className="h-2 w-5/6  my-2" />
+				<Skeleton className="h-2 w-4/6  my-2" />
+				<Skeleton className="h-2 w-5/6  my-2" />
+				<Skeleton className="h-2 w-5/6  my-2" />
+				<Skeleton className="h-2 w-4/6  my-2" />
+				<Skeleton className="h-2 w-5/6  my-2" />
+				<Skeleton className="h-2 w-5/6  my-2" />
+				<Skeleton className="h-2 w-5/6  my-2" />
+				<Skeleton className="h-2 w-4/6  my-2" />
+				<Skeleton className="h-2 w-5/6  my-2" />
+			</div>
+		);
+	}
+	if (!session) {
+		return (
+			<div className="h-screen flex justify-center items-center">
+				<Button variant="secondary" onClick={() => signIn()}>
+					Login
+				</Button>
+				;
+			</div>
+		);
+	} else {
 		return (
 			<NoSSR
 				countDown={countDown}
@@ -255,9 +278,4 @@ export default function Home() {
 			/>
 		);
 	}
-	return (
-		<div className="w-full h-screen flex justify-center items-center 0">
-			<Skeleton className="h-2/3 w-full text-red-400 mt-16" />
-		</div>
-	);
 }
