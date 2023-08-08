@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/users to retrieve all users
@@ -21,6 +22,11 @@ export async function GET(request: NextRequest) {
 
 // POST /api/users to create a new user
 export async function POST(request: NextRequest) {
+	const token = await getToken({ req: request, secret: process.env.SECRET });
+
+	if (!token) {
+		return NextResponse.json({ error: "flag:{good job}" });
+	}
 	let user;
 
 	const requestBody = await request.json();
