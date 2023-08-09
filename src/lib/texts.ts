@@ -11,4 +11,4 @@ export const texts = [
 	"in a small village villagers prepare for a festive celebration colorful decorations adorn the streets and the joyful sounds of music and dance create an atmosphere of unity and happiness amidst the ruins of an ancient civilization archaeologists uncover artifacts that offer glimpses into the past each artifact holds a story of its own waiting to be deciphered",
 ];
 
-export const names = ["otait-ta", "hel-makh"];
+export const names = ["hel-makh"];
