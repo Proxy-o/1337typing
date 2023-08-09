@@ -15,7 +15,7 @@ import { updatePWD } from "./actions";
 const NoSSR = dynamic(() => import("@/components/text.component"), {
 	ssr: false,
 });
-const SECONDS = 3;
+const SECONDS = 60;
 
 export default function Home() {
 	/// the game vars starts here
