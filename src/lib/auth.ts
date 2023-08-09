@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
 			clientSecret,
 		}),
 	],
-	secret: process.env.SECRET,
+	secret: process.env.NEXT_PUBLIC_SECRET,
 	callbacks: {
 		// async redirect({ url, baseUrl }) {
 		// 	return Promise.resolve("/");

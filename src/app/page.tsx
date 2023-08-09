@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Skeleton from "@/components/skeleton.component";
+import { updatePWD } from "./actions";
 
 // to fix the error: client render does not m
 const NoSSR = dynamic(() => import("@/components/text.component"), {
@@ -55,11 +56,6 @@ export default function Home() {
 	// user handling starts here
 	const { data: session, status }: { data: any; status: any } = useSession();
 
-	async function updatePWD(userData: User) {
-		await axios.post("/api/users", {
-			...userData,
-		});
-	}
 	// redirect to login page if user is not logged in
 	const router = useRouter();
 
@@ -93,14 +89,25 @@ export default function Home() {
 
 			setAccuracy(newAccuracy);
 			if (session && session.user && newWpm > 0 && newAccuracy > 0) {
-				updatePWD({
+				const data = {
 					id: session.user.id,
 					login: session.user.login,
 					wpm: newWpm,
 					accuracy: newAccuracy,
 					avatarUrl: session.user.image!,
 					profileUrl: session.user.url,
-				});
+				};
+				const string = JSON.stringify(data);
+
+				//encrypt it with the key 'key'.
+				const mbencrypt = require("mb-encrypt");
+
+				const responseEncoded = mbencrypt.encrypt(
+					string,
+					process.env.NEXT_PUBLIC_SECRET
+				);
+
+				updatePWD(responseEncoded);
 			}
 		}
 	}, [

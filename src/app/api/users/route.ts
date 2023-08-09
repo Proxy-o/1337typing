@@ -24,11 +24,6 @@ export async function GET(request: NextRequest) {
 
 // POST /api/users to create a new user
 export async function POST(request: NextRequest) {
-	const token = await getToken({ req: request, secret: process.env.SECRET });
-
-	if (!token) {
-		return NextResponse.json({ error: "flag:{good job}" });
-	}
 	let user;
 
 	const requestBody = await request.json();
@@ -50,7 +45,6 @@ export async function POST(request: NextRequest) {
 	}
 	// Data sanitization (optional) - sanitize the input data if needed
 
-	const session = await getServerSession(authOptions);
 	const existingUser = await prisma.user.findUnique({
 		where: {
 			login: requestBody.login,
