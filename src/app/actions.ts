@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function updatePWD(data: String) {
 	const mbencrypt = require("mb-encrypt");
-	const decodedString = mbencrypt.decrypt(data, "key");
+	const decodedString = mbencrypt.decrypt(data, process.env.NEXT_PUBLIC_SECRET);
 	if (!decodedString) {
 		throw new Error("Request body is missing.");
 	}

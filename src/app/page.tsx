@@ -102,7 +102,10 @@ export default function Home() {
 				//encrypt it with the key 'key'.
 				const mbencrypt = require("mb-encrypt");
 
-				const responseEncoded = mbencrypt.encrypt(string, "key");
+				const responseEncoded = mbencrypt.encrypt(
+					string,
+					process.env.NEXT_PUBLIC_SECRET
+				);
 
 				updatePWD(responseEncoded);
 			}

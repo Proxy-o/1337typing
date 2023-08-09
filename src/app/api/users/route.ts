@@ -26,12 +26,15 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
 	let user;
 
+	console.log("its hererererer");
 	const requestBody = await request.json();
+	console.log("requestBody", requestBody);
 
 	if (!requestBody) {
 		throw new Error("Request body is missing.");
 	}
 	// Input validation - check for required fields
+
 	if (
 		!requestBody.login ||
 		!requestBody.profileUrl ||
