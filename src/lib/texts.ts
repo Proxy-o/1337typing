@@ -10,3 +10,5 @@ export const texts = [
 	"as the sun sets on a warm summer evening families gather around a bonfire on the beach laughter and stories fill the air as marshmallows roast over the crackling flames high in the mountains a waterfall plunges into a crystal-clear pool below the sound of rushing water is soothing and the surrounding trees provide a sense of serenity and tranquility",
 	"in a small village villagers prepare for a festive celebration colorful decorations adorn the streets and the joyful sounds of music and dance create an atmosphere of unity and happiness amidst the ruins of an ancient civilization archaeologists uncover artifacts that offer glimpses into the past each artifact holds a story of its own waiting to be deciphered",
 ];
+
+export const names = ["otait-ta", "hel-makh"];

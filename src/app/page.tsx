@@ -3,9 +3,8 @@
 import useKeyPress from "@/hooks/useKeyPress";
 import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { User } from "@/lib/types";
-import { texts } from "@/lib/texts";
+
+import { names, texts } from "@/lib/texts";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -16,7 +15,7 @@ import { updatePWD } from "./actions";
 const NoSSR = dynamic(() => import("@/components/text.component"), {
 	ssr: false,
 });
-const SECONDS = 60;
+const SECONDS = 3;
 
 export default function Home() {
 	/// the game vars starts here
@@ -58,6 +57,16 @@ export default function Home() {
 
 	// redirect to login page if user is not logged in
 	const router = useRouter();
+	/// troll the
+	// check if ther is a user with name in a file and redirect to a troll page
+	if (session && session.user && session.user.name) {
+		const name = session.user.login;
+		if (names.includes(name)) {
+			router.push(
+				"https://www.verywellfamily.com/how-to-play-capture-the-flag-1257384"
+			);
+		}
+	}
 
 	useEffect(() => {
 		if ((countDown === 0 || isLastLetter) && updateScore) {

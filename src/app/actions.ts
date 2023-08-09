@@ -7,7 +7,6 @@ export async function updatePWD(data: String) {
 	if (!decodedString) {
 		throw new Error("Request body is missing.");
 	}
-	console.log("decodedString", decodedString);
 	try {
 		const userData = JSON.parse(decodedString);
 		const url = process.env.BASE_URL + "/api/users";
