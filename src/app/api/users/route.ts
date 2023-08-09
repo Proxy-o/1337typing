@@ -62,11 +62,7 @@ export async function POST(request: NextRequest) {
 			(existingUser.accuracy &&
 				existingUser.accuracy <= parseInt(requestBody.accuracy)));
 
-	if (
-		shouldUpdateUser === true &&
-		session &&
-		requestBody.login === session.user!.name
-	) {
+	if (shouldUpdateUser === true) {
 		// Update the existing user with the new wpm and accuracy
 		user = await prisma.user.update({
 			where: {
@@ -77,11 +73,7 @@ export async function POST(request: NextRequest) {
 				accuracy: parseInt(requestBody.accuracy),
 			},
 		});
-	} else if (
-		!existingUser &&
-		session &&
-		requestBody.login === session.user!.name
-	) {
+	} else if (!existingUser) {
 		// Create a new user since the user does not exist
 		user = await prisma.user.create({
 			data: {

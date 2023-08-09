@@ -15,7 +15,7 @@ import Skeleton from "@/components/skeleton.component";
 const NoSSR = dynamic(() => import("@/components/text.component"), {
 	ssr: false,
 });
-const SECONDS = 60;
+const SECONDS = 3;
 
 export default function Home() {
 	/// the game vars starts here
