@@ -10,10 +10,8 @@ export async function updatePWD(data: String) {
 	console.log("decodedString", decodedString);
 	try {
 		const userData = JSON.parse(decodedString);
-		const response = await axios.post(
-			"http://localhost:3000/api/users",
-			userData
-		);
+		const url = process.env.BASE_URL + "/api/users";
+		const response = await axios.post(url, userData);
 	} catch (error) {
 		console.error("Error the encprted data", error);
 	}
