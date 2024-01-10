@@ -262,16 +262,7 @@ export default function Home() {
 			</div>
 		);
 	}
-	if (!session) {
-		return (
-			<div className="h-screen flex justify-center items-center">
-				<Button variant="secondary" onClick={() => signIn()}>
-					Login
-				</Button>
-				;
-			</div>
-		);
-	} else {
+
 		return (
 			<NoSSR
 				countDown={countDown}
@@ -283,5 +274,5 @@ export default function Home() {
 				words={words}
 			/>
 		);
-	}
+	
 }
