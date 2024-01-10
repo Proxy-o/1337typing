@@ -56,17 +56,7 @@ export default function Home() {
 	const { data: session, status }: { data: any; status: any } = useSession();
 
 	// redirect to login page if user is not logged in
-	const router = useRouter();
-	/// troll the
-	// check if ther is a user with name in a file and redirect to a troll page
-	if (session && session.user && session.user.name) {
-		const name = session.user.login;
-		if (names.includes(name)) {
-			router.push(
-				"https://www.verywellfamily.com/how-to-play-capture-the-flag-1257384"
-			);
-		}
-	}
+
 
 	useEffect(() => {
 		if ((countDown === 0 || isLastLetter) && updateScore) {
